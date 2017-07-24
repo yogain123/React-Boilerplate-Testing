@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>React - Template</title>
+    <title>React - Component</title>
     <script src="../../js/react.min.js"></script>
     <script src="../../js/react-dom.min.js"></script>
     <script src="../../js/browser.min.js"></script>
@@ -13,10 +13,86 @@
     <div id="container"></div>
 
     <script type="text/babel">
+        var Yogi = React.createClass({
+            
+            edit : function()
+            {
+                this.setState({editing : true})
+                //alert("EDiTED"); 
+            },
+            
+            remove : function()
+            {
+               alert("REMOVED"); 
+            },
+            
+            getInitialState : function()
+            {
+                return {checked : true, editing : false}
+            }, 
+            
+            handleChecked : function()
+            {
+               this.setState({checked : !this.state.checked})
+            },
+            
+            normalRender : function()
+            {
+                var msg;
+                if(this.state.checked){
+                    console.log("checked");
+                    msg = "checked";
+                    }
+                else{
+                    console.log("unchecked");
+                    msg = "unchecked";
+                    }  
+                return (
+                    <div>
+                        <h2>{this.props.children}</h2>
+                        <button onClick={this.edit} className="button">EDIT</button>
+                        <button onClick={this.remove}>REMOVE</button>
+                        <input type="checkbox" onChange={this.handleChecked} defaultChecked={this.state.checked}></input>
+                        <h4>{msg}</h4>
+                    </div>
+            
+                );
+            },
+            
+            save : function()
+            {
+                this.setState({editing : false});
+                var val = this.refs.newText.value;
+                console.log(val);
+                
+            },
+            
+            formRender : function()
+            {
+                return(
+                    <div>
+                     <textarea ref="newText">{this.props.title}</textarea>
+                    <button onClick={this.save}>Save</button>
+                    </div>
+                )
+            
+            },
+            
+            render: function() {
+                
+                if(this.state.editing)
+                    return this.formRender();
+                else
+                    return this.normalRender();
+                
+                 
+            }
+        });
         ReactDOM.render(
-            <h2>Welcome to React!</h2>,
-            document.getElementById('container')
-        );
+            <div className="container">
+                <Yogi title="anuja" gender="female">Hello</Yogi>
+                <Yogi title="yogi" gender="male">Namaste</Yogi>         
+        </div>, document.getElementById("container"));
     </script>
 
 </body>
